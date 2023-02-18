@@ -25,11 +25,9 @@ require("dotenv").config();
 const http = require("http");
 const express = require("express"); // backend framework for our node server.
 const session = require("express-session"); // library that stores info about each connected user
-const mongoose = require("mongoose"); // library to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
 
 const api = require("./api");
-const auth = require("./auth");
 
 // socket stuff
 const socketManager = require("./server-socket");
@@ -39,19 +37,6 @@ const socketManager = require("./server-socket");
 const mongoConnectionURL = process.env.MONGO_SRV;
 // TODO change database name to the name you chose
 const databaseName = "FILL_ME_IN";
-
-// mongoose 7 warning
-mongoose.set("strictQuery", false);
-
-// connect to mongodb
-mongoose
-  .connect(mongoConnectionURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: databaseName,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log(`Error connecting to MongoDB: ${err}`));
 
 // create a new express server
 const app = express();
@@ -69,9 +54,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
-// this checks if the user is logged in, and populates "req.user"
-app.use(auth.populateCurrentUser);
 
 // connect user-defined routes
 app.use("/api", api);
