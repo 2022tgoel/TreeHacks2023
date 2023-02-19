@@ -184,7 +184,7 @@ class NeuralNet extends React.Component {
           {this.getSVGForNetwork()}
         </network>
       </page>
-      <MotionComponent></MotionComponent>
+      {/* <MotionComponent></MotionComponent> */}
       
       </>
       
