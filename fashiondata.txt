@@ -1,0 +1,43 @@
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.41	0
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.62	1
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.20	2
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.26	3
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.13	4
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.20	5
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.15	6
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.38	7
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.57	8
+mnistfashion	fashionmodel	fashionvalidation30	F-Measure	0.58	9
+
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.27	0
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.33	1
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.11	2
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.13	3
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.02	4
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.02	5
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.00	6
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.10	7
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.31	8
+mnistfashionmodel4	fashionmodel4	fashionvalidation4	F-Measure	0.27	9
+
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.70	0
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.68	1
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.48	2
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.58	3
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.57	4
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.53	5
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.14	6
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.65	7
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.81	8
+mnistfashionmodel10	fashionmodel10	fashionvalidation10	F-Measure	0.77	9
+
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.36	0
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.55	1
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.14	2
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.23	3
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.16	4
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.23	5
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.00	6
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.29	7
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.51	8
+mnistfashionmodel16	fashionmodel16	fashionvalidation16	F-Measure	0.45	9
