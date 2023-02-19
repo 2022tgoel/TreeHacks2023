@@ -62,7 +62,9 @@ const Edge = (props) => { // edges are positioned relative to layers
   return (
   <>
     <g>
-      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={rgbToHex(255, 0, 0)} strokeWidth={props.weight + 5}/>
+
+      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={props.weight > 0 ? rgbToHex(255, 255 - 50*props.weight, 255 - 50 * props.weight) : rgbToHex(255 + 50 * props.weight, 255 + 25 * props.weight, 255 + 25 * props.weight)} strokeWidth={10} />
+
       <circle className="btn" cx={props.x1 + dx*0.4} cy={props.y1 + dy*0.4} r={10} onClick={() => props.increaseWeight()}></circle>
       <circle className="btn" cx={props.x1 + dx*0.6} cy={props.y1 + dy*0.6} r={10} onClick={() => props.decreaseWeight()}></circle>
       
@@ -125,14 +127,18 @@ class NeuralNet extends React.Component {
 
   increaseWeight(layer, i, j){
     let weights = this.state.weights.slice();
-    weights[layer][j][i]+=1;
+    if (weights[layer][i][j] < 5) {
+      weights[layer][j][i]+=1;
+    }
     console.log(weights[layer][j][i]);
     this.setState({weights :weights});
   }
 
   decreaseWeight(layer, i, j){
     let weights = this.state.weights.slice();
-    weights[layer][j][i]-=1;
+    if (weights[layer][i][j] > -5) {
+      weights[layer][j][i]-=1;
+    }
     console.log(weights[layer][j][i]);
     this.setState({weights :weights});
   }
@@ -372,9 +378,8 @@ class NeuralNet extends React.Component {
           </select>
 
           {/* <button type="submit" onClick={this.handleRowSubmit}>Submit</button> */}
-          <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={this.handleRowSubmit}></div>
+          <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%", marginBottom: "3rem"}} onClick={this.handleRowSubmit}></div>
 
-          <button onClick={() => this.resetActivations()}>Reset Network</button>
         </run>
 
         {/* <MotionComponent></MotionComponent> */}

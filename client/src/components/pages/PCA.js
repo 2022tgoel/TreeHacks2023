@@ -38,7 +38,9 @@ const PCA = () => {
     return (
         <div className="u-textCenter">
         <h1>Accuracy (F1) Scores For Digit Classification</h1>
-        <p className="center" style={{width: "80vw"}} >A really important technique often used in data analysis and machine learning is <strong>Principal Component Analysis (PCA)</strong> — this allows us to reduce the complexity of our data which can often make it easier to process! In the below example, we've trained a classifier for a dataset consisting of images of digits (0-9) using <strong>InterSystems's IntegratedML</strong> tool. Maybe more isn't always better... play around with the dimensionality of the data and see which results in the best training scores for classification of images of digits.</p>
+        <p className="center" style={{width: "80vw"}} >A really important technique often used in data analysis and machine learning is <strong>Principal Component Analysis (PCA)</strong> — this allows us to reduce the complexity of our data which can often make it easier to process! <br/><br/>In the below example, we've trained a classifier for a dataset consisting of images of digits (0-9) using <strong>InterSystems's IntegratedML</strong> tool. Maybe more isn't always better...<br/><br/>
+        
+        Play around with data dimensionality — what results in the best training scores?</p>
         <br></br>
         <div>Dimensionality: {dimensionalityDescriptors[dim]}</div>
         <ReactSlider
