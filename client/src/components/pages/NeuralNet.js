@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
+import "./style.css"
 import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
 
@@ -51,12 +52,15 @@ function rgbToHex(r, g, b) {
 const Edge = (props) => { // edges are positioned relative to layers 
   let cx = (props.x1 + props.x2) / 2;
   let cy = (props.y1 + props.y2) / 2
+  let dx = props.x2 - props.x1;
+  let dy = props.y2 - props.y1;
   return (
   <>
     <g>
-      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={rgbToHex(120 + 30*props.weight, 0, 0)} strokeWidth={5}/>
-      <circle className="btn" cx={cx-7} cy={cy} r={5} onClick={() => props.increaseWeight()}></circle>
-      <circle className="btn" cx={cx+7} cy={cy} r={5} onClick={() => props.decreaseWeight()}></circle>
+      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={rgbToHex(255, 0, 0)} strokeWidth={props.weight + 5}/>
+      <circle className="btn" cx={props.x1 + dx*0.4} cy={props.y1 + dy*0.4} r={10} onClick={() => props.increaseWeight()}></circle>
+      <circle className="btn" cx={props.x1 + dx*0.6} cy={props.y1 + dy*0.6} r={10} onClick={() => props.decreaseWeight()}></circle>
+      
     </g>
     
   </>);
