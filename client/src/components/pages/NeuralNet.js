@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
+import "./style.css"
+import AnimatedText from "../modules/AnimatedText.js"
 import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
 import rect from "../../../images/rect.png";
@@ -52,12 +54,15 @@ function rgbToHex(r, g, b) {
 const Edge = (props) => { // edges are positioned relative to layers 
   let cx = (props.x1 + props.x2) / 2;
   let cy = (props.y1 + props.y2) / 2
+  let dx = props.x2 - props.x1;
+  let dy = props.y2 - props.y1;
   return (
   <>
     <g>
-      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={rgbToHex(120 + 30*props.weight, 0, 0)} strokeWidth={5}/>
-      <circle className="btn" cx={cx-7} cy={cy} r={5} onClick={() => props.increaseWeight()}></circle>
-      <circle className="btn" cx={cx+7} cy={cy} r={5} onClick={() => props.decreaseWeight()}></circle>
+      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={rgbToHex(255, 0, 0)} strokeWidth={props.weight + 5}/>
+      <circle className="btn" cx={props.x1 + dx*0.4} cy={props.y1 + dy*0.4} r={10} onClick={() => props.increaseWeight()}></circle>
+      <circle className="btn" cx={props.x1 + dx*0.6} cy={props.y1 + dy*0.6} r={10} onClick={() => props.decreaseWeight()}></circle>
+      
     </g>
     
   </>);
@@ -272,12 +277,41 @@ class NeuralNet extends React.Component {
     this.setState({activations : null});
   }
 
+  getTitle(){
+    const placeholderText = [
+      { type: "heading1", text: "Hand Train a Model for the Exclusive OR (XOR) Function!" }
+    ];
+    const container = {
+      visible: {
+        transition: {
+          staggerChildren: 0.025
+        }
+      }
+    };
+    return <motion.div
+      className="App"
+      initial="hidden"
+      // animate="visible"
+      animate="visible"
+      variants={container}
+    >
+      <div className="container">
+        {placeholderText.map((item, index) => {
+          return <AnimatedText {...item} key={index} />;
+        })}
+      </div>
+    </motion.div>;
+  }
+
   render(){
+    
     console.log(this.state.weights);
     return (
       <>
       <div className="u-textCenter">
-        <h1>Hand Train a Model for the Exclusive OR (XOR) Function!</h1>
+        <br></br>
+        <br></br>
+        {this.getTitle()};
         <p style={{marginLeft: "2rem", marginRight: "2rem"}}>The exclusive or (or <strong>XOR</strong>) operation takes two binary inputs (numbers that are either zero or one) and returns <strong>true</strong> if they are different and <strong>false</strong> if they are the same.</p>
         <p>Let's try constructing our own custom neural network to represent this function! </p>
         <br></br>

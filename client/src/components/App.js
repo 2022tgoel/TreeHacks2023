@@ -4,8 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
+import HomePage from "./pages/HomePage.js";
 import NeuralNet from "./pages/NeuralNet";
-
+import NavBar from "./modules/NavBar.js"
 import "../utilities.css";
 
 import { socket } from "../client-socket.js";
@@ -17,17 +18,29 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   return (
+    <>
+    <NavBar></NavBar>
     <Routes>
       <Route
         path="/"
         element={
-          <NeuralNet
+          <HomePage
             path="/"
+          />
+        }
+      />
+      <Route
+        path="/xornet"
+        element={
+          <NeuralNet
+            path="/xornet"
           />
         }
       />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </>
+    
   );
 };
 
