@@ -5,6 +5,7 @@ import "../../utilities.css";
 import "./NeuralNet.css"
 import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
+import rect from "../../../images/rect.png";
 
 let sigmoid = require('sigmoid');
 

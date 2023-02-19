@@ -187,3 +187,11 @@ body {
 p {
     font-size: 1.2rem;
 }
+
+.myTable{
+    background:url("../../../images/rect.png") no-repeat;
+    cursor:pointer;
+    border:none;
+    width:100px;
+    height:100px;
+}
