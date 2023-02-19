@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
 
+let sigmoid = require('sigmoid');
+
 let s = 120; /* hardcoded */
 let r = 35 
 
@@ -72,8 +74,11 @@ class NeuralNet extends React.Component {
     super(props);
     this.n = 3;
     let layer_sizes = Array(this.n).fill(1)
-    this.state = {layer_sizes : layer_sizes, weights : this.resetWeights(layer_sizes)}; // two layers, each with size 1
+    layer_sizes[0] = 2;
+    this.state = {layer_sizes : layer_sizes, weights : this.resetWeights(layer_sizes), row : 0, activations : null}; // two layers, each with size 1
     this.data = [[0, 0, 0], [1, 0, 1], [0, 1, 1], [1, 1, 0]];
+    this.handleRowChange = this.handleRowChange.bind(this);
+    this.handleRowSubmit = this.handleRowSubmit.bind(this);
   }
 
   resetWeights(layer_sizes){
@@ -111,7 +116,7 @@ class NeuralNet extends React.Component {
     this.setState({weights :weights});
   }
 
-  getSVGForNetwork(){
+  getSVGNoActivations(){
     let height = s*Math.max(...this.state.layer_sizes)
     console.log("here");
     let components = Array();
@@ -141,6 +146,43 @@ class NeuralNet extends React.Component {
     return (<><svg position="absolute" width={s*this.n} height={height}>{components}</svg></>);
   }
 
+  getSVGActivations(){
+    let height = s*Math.max(...this.state.layer_sizes)
+    console.log("here");
+    let components = Array();
+    let key = 0;
+    for (let layer =0; layer < this.n; layer++){
+      let x = s*layer + s/2; // center of all the circles
+      for (let node =0; node < this.state.layer_sizes[layer]; node++){
+        let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
+        let activ = this.state.activations[layer][node];
+        // console.log(key, x, y);
+        components.push(<motion.circle key={key} cx={x} cy={y} r={r} initial={{ opacity: 0 }}
+          animate={{ opacity:  activ}} transition={{delay : layer, duration : 1}}></motion.circle>);
+        key+=1;
+      }
+    }
+
+    for (let layer =0; layer < this.n-1; layer++){
+      for (let i = 0; i < this.state.layer_sizes[layer]; i++){
+        for (let j =0; j < this.state.layer_sizes[layer+1]; j++){
+          let y1 = i*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
+          let y2 = j*s + s/2 + height/2 - s*this.state.layer_sizes[layer+1]/2;
+          // console.log(y1, y2);
+          components.push(<Edge key={key} x1={s*layer+s/2} x2={s*(layer+1)+s/2} y1={y1} y2={y2} weight={this.state.weights[layer][j][i]} increaseWeight={()=> this.increaseWeight(layer, i, j)} decreaseWeight={()=> this.decreaseWeight(layer, i, j)}></Edge>)
+          key++
+        }
+      }
+    }
+
+    return (<><svg position="absolute" width={s*this.n} height={height}>{components}</svg></>);
+  }
+
+  getSVGForNetwork(){
+    if (this.state.activations == null) return this.getSVGNoActivations();
+    else return this.getSVGActivations();
+  }
+
   getLayersInp(){
     let layerInps = Array(this.n);
     for(let i = 0; i < this.n;i++){
@@ -167,6 +209,46 @@ class NeuralNet extends React.Component {
     return <data><table>{table}</table></data>;
   }
 
+  handleRowChange(event){
+    if (event.target.value == '') return;
+    console.log("changing row", event.target.value)
+    this.setState({row : parseInt(event.target.value)})
+    console.log("state", this.state);
+  }
+
+  neuron(arr1, arr2){
+    console.log("dot product", arr1, arr2);
+    let x = 0;
+    for (let i = 0; i < arr1.length;i++) x+=arr1[i]*arr2[i];
+    return sigmoid(x);
+  }
+
+  handleRowSubmit(event){
+    // run the neural network on this row
+    console.log(this.data);
+    let dataRow= this.data[this.state.row];
+    console.log(dataRow);
+    let input = [dataRow[0], dataRow[1]];
+    let neuralValues = Array();
+    let weights = this.state.weights;
+    neuralValues.push(input);
+    for (let layer = 0; layer < this.n-1; layer++){
+      let output = Array();
+      for (let j = 0; j < weights[layer].length; j++){
+        // comuputing the jth output value
+        output.push(this.neuron(weights[layer][j], neuralValues[neuralValues.length - 1]))
+      }
+      neuralValues.push(output);
+    }
+    console.log(neuralValues);
+
+    // animate the color change of the neurons 
+    
+    this.setState({activations : neuralValues});
+    //
+    event.preventDefault();
+  }
+
   render(){
     console.log(this.state.weights);
     return (
@@ -182,7 +264,13 @@ class NeuralNet extends React.Component {
         </layersinp>
         <network>
           {this.getSVGForNetwork()}
+
         </network>
+        <run>
+          <label>Run data on a row (1-4):</label><br></br>
+          <input type="text"onChange={this.handleRowChange}></input><br></br>
+          <button type="submit" onClick={this.handleRowSubmit}>Submit</button>
+        </run>
       </page>
       {/* <MotionComponent></MotionComponent> */}
       
