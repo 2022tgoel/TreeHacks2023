@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
 import "./style.css"
+import AnimatedText from "../modules/AnimatedText.js"
 import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
 
@@ -275,12 +276,41 @@ class NeuralNet extends React.Component {
     this.setState({activations : null});
   }
 
+  getTitle(){
+    const placeholderText = [
+      { type: "heading1", text: "Hand Train a Model for the Exclusive OR (XOR) Function!" }
+    ];
+    const container = {
+      visible: {
+        transition: {
+          staggerChildren: 0.025
+        }
+      }
+    };
+    return <motion.div
+      className="App"
+      initial="hidden"
+      // animate="visible"
+      animate="visible"
+      variants={container}
+    >
+      <div className="container">
+        {placeholderText.map((item, index) => {
+          return <AnimatedText {...item} key={index} />;
+        })}
+      </div>
+    </motion.div>;
+  }
+
   render(){
+    
     console.log(this.state.weights);
     return (
       <>
       <div className="u-textCenter">
-        <h1>Hand Train a Model for the Exclusive OR (XOR) Function!</h1>
+        <br></br>
+        <br></br>
+        {this.getTitle()};
         <p style={{marginLeft: "2rem", marginRight: "2rem"}}>The exclusive or (or <strong>XOR</strong>) operation takes two binary inputs (numbers that are either zero or one) and returns <strong>true</strong> if they are different and <strong>false</strong> if they are the same.</p>
         <p>Let's try constructing our own custom neural network to represent this function! </p>
         <br></br>
