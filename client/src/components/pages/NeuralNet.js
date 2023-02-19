@@ -9,7 +9,7 @@ import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
 import rect from "../../../images/rect.png";
 import xorTable from "../../../images/XORTable.png"
-import BorderImg from "../../../images/Border_1.png"
+import BorderImg from "../../../images/Border.jpg"
 
 let sigmoid = require('sigmoid');
 
