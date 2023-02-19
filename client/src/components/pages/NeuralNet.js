@@ -169,8 +169,8 @@ class NeuralNet extends React.Component {
         let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
         let activ = this.state.activations[layer][node];
         // console.log(key, x, y);
-        components.push(<motion.circle key={key} cx={x} cy={y} r={r} initial={{ opacity : 0}}
-          animate={{ opacity : activ}} transition={{delay : layer, duration : 1}}></motion.circle>);
+        components.push(<motion.circle key={key} cx={x} cy={y} r={r}
+          animate={{ fillOpacity : [0, activ], transition : {delay : layer, duration : 1}}}></motion.circle>);
         key+=1;
       }
     }
@@ -230,7 +230,7 @@ class NeuralNet extends React.Component {
   handleRowChange(event){
     if (event.target.value == '') return;
     console.log("changing row", event.target.value)
-    this.setState({row : parseInt(event.target.value)})
+    this.setState({row : parseInt(event.target.value)-1})
     console.log("state", this.state);
   }
 
@@ -265,6 +265,10 @@ class NeuralNet extends React.Component {
     this.setState({activations : neuralValues});
     //
     event.preventDefault();
+  }
+
+  resetActivations(){
+    this.setState({activations : null});
   }
 
   render(){
@@ -303,6 +307,8 @@ class NeuralNet extends React.Component {
           <input type="text"onChange={this.handleRowChange}></input><br></br>
           {/* <button type="submit" onClick={this.handleRowSubmit}>Submit</button> */}
           <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={this.handleRowSubmit}></div>
+
+          <button onClick={() => this.resetActivations()}>Reset Network</button>
         </run>
 
         {/* <MotionComponent></MotionComponent> */}
