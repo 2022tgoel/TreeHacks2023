@@ -97,8 +97,12 @@ const AnimatedNode = (props) => {
     });
     
   }, []);
-  return (<motion.image key={key} href={nodeImage} x={x-r} y={y-r} height={r*2} width={r*2}
-    animate={controls}></motion.image>);
+  return (
+    <>
+    <motion.image key={key} href={nodeImage} x={x-r} y={y-r} height={r*2} width={r*2}
+    animate={controls}></motion.image>
+    </>
+  );
 
 }
 
@@ -160,6 +164,21 @@ class NeuralNet extends React.Component {
     let components = Array();
     let key = 0;
     
+    for (let layer =0; layer < this.n; layer++){
+      let x = s*layer + s/2; // center of all the circles
+      for (let node =0; node < this.state.layer_sizes[layer]; node++){
+        let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
+        components.push(
+          <>
+          <rect x={x-r} y={y-r} height={r*2} width={r*2} stroke="pink" strokeWidth="5px" fillOpacity={0}/>
+          </>
+          
+        );
+        
+      
+        key+=1;
+      }
+    }
 
     for (let layer =0; layer < this.n-1; layer++){
       for (let i = 0; i < this.state.layer_sizes[layer]; i++){
@@ -180,7 +199,10 @@ class NeuralNet extends React.Component {
         // console.log(key, x, y);
         // components.push(<circle key={key} cx={x} cy={y} r={r}></circle>);
         components.push(
+          <>
           <image href={nodeImage} x={x-r} y={y-r} height={r*2} width={r*2}/>
+          </>
+          
         );
         
       
@@ -196,6 +218,22 @@ class NeuralNet extends React.Component {
     console.log("here, getting the new SVG");
     let components = Array();
     let key = 0;
+
+    for (let layer =0; layer < this.n; layer++){
+      let x = s*layer + s/2; // center of all the circles
+      for (let node =0; node < this.state.layer_sizes[layer]; node++){
+        let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
+        components.push(
+          <>
+          <rect x={x-r} y={y-r} height={r*2} width={r*2} stroke="pink" strokeWidth="5px" fillOpacity={0}/>
+          </>
+          
+        );
+        
+      
+        key+=1;
+      }
+    }
     
     for (let layer =0; layer < this.n-1; layer++){
       for (let i = 0; i < this.state.layer_sizes[layer]; i++){
