@@ -3,6 +3,7 @@ import ReactSlider from "react-slider";
 import Chart from 'chart.js/auto';
 import {Bar} from 'react-chartjs-2';
 import TestImg from "../../../images/rect.png"
+import MovingCat from "../modules/Cat.js"
 
 import "./style.css"
 const PCA = () => {
@@ -75,9 +76,7 @@ const PCA = () => {
           }}
         />
         <p>Class Number</p>
-
-        <img src={TestImg} style={{position: "absolute", top: "0", right: "0", zIndex: "-1"}}/>
-
+        <MovingCat></MovingCat>
         </div>
    );
 };

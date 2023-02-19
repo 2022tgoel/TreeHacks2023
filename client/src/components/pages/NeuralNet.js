@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
@@ -75,22 +75,24 @@ const Edge = (props) => { // edges are positioned relative to layers
   
 }
 
-const MotionComponent = () => {
-  return <motion.div
-  className="box"
-  animate={{
-    scale: [1, 2, 2, 1, 1],
-    rotate: [0, 0, 180, 180, 0],
-    borderRadius: ["0%", "0%", "50%", "50%", "0%"]
-  }}
-  transition={{
-    duration: 2,
-    ease: "easeInOut",
-    times: [0, 0.2, 0.5, 0.8, 1],
-    repeat: Infinity,
-    repeatDelay: 1
-  }}
-/>;
+const AnimatedNode = (props) => {
+  let layer = props.layer;
+  let activ = props.activ;
+  let x = props.x;
+  let y = props.y;
+  let key = props.key;
+  let n = props.n;
+  let slowdown = 2;
+  const controls = useAnimationControls();
+  useEffect(() => {
+    controls.start({ fillOpacity : [0, activ], transition : {delay :slowdown* layer, duration : slowdown*1} }).then(() => {
+      controls.start({ fillOpacity: 1, transition : {delay : slowdown*(n - layer), duration : slowdown* 1}})
+    });
+    
+  }, []);
+  return (<motion.circle key={key} cx={x} cy={y} r={r}
+    animate={controls}></motion.circle>);
+
 }
 
 class NeuralNet extends React.Component {
@@ -103,6 +105,7 @@ class NeuralNet extends React.Component {
     this.data = [[0, 0, 0], [1, 0, 1], [0, 1, 1], [1, 1, 0]];
     this.handleRowChange = this.handleRowChange.bind(this);
     this.handleRowSubmit = this.handleRowSubmit.bind(this);
+
   }
 
   resetWeights(layer_sizes){
@@ -175,8 +178,9 @@ class NeuralNet extends React.Component {
   }
 
   getSVGActivations(){
+    
     let height = s*Math.max(...this.state.layer_sizes)
-    console.log("here");
+    console.log("here, getting the new SVG");
     let components = Array();
     let key = 0;
     for (let layer =0; layer < this.n; layer++){
@@ -184,9 +188,11 @@ class NeuralNet extends React.Component {
       for (let node =0; node < this.state.layer_sizes[layer]; node++){
         let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
         let activ = this.state.activations[layer][node];
+        
+        components.push(<AnimatedNode x={x} y={y} activ={activ} layer={layer} n={this.n} key={key}></AnimatedNode>)
         // console.log(key, x, y);
-        components.push(<motion.circle key={key} cx={x} cy={y} r={r}
-          animate={{ fillOpacity : [0, activ], transition : {delay : layer, duration : 1}}}></motion.circle>);
+        // components.push(<motion.circle key={key} cx={x} cy={y} r={r}
+        //   animate={{ fillOpacity : [0, activ], transition : {delay : layer, duration : 1}}}></motion.circle>);
         key+=1;
       }
     }
@@ -259,7 +265,8 @@ class NeuralNet extends React.Component {
 
   handleRowSubmit(event){
     // run the neural network on this row
-    console.log(this.data);
+    this.setState({activations : null})
+    console.log("the data", this.data);
     let input = [];
     if (this.state.row != 4) {
       let dataRow= this.data[this.state.row];
@@ -280,7 +287,7 @@ class NeuralNet extends React.Component {
       }
       neuralValues.push(output);
     }
-    console.log(neuralValues);
+    console.log("the resulting activations", neuralValues);
 
     // animate the color change of the neurons 
     
@@ -388,7 +395,6 @@ class NeuralNet extends React.Component {
 
       <img src={BorderImg} style={{position: "absolute", top: "0", left: "0", zIndex: "1", borderWidth: "0"}}></img>
       <img src={BorderImg} style={{position: "absolute", top: "0", right: "0", zIndex: "1", transform: "scaleX(-1)"}}></img>
-
       </>
       
     );
