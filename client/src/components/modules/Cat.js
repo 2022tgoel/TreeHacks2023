@@ -1,19 +1,14 @@
 import React from "react";
-import { motion, useScroll } from "framer-motion";
 import TestImg from "../../../images/rect.png"
 
 const MovingCat = () => {
-    const { scrollYProgress } = useScroll();
     
     return (
-        <>
-        <img src={TestImg} height={100} width={100} style={{position : absolute, top: window.innerHeight - 10}}/>
-        </>
-    // <>
-    // <motion.div style={{position : absolute, top: window.innerHeight - 10}} /> 
-    //     <img src={TestImg} height={100} width={100}/>
-    //   <motion.div/>
-    // </>
+    <>
+    <div style={{position: "fixed", bottom: "0px", right: "0px"}}> 
+        <img src={TestImg} height={300} width={300}/>
+      </div>
+    </>
       
     )
   }
