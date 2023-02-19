@@ -8,6 +8,7 @@ import AnimatedText from "../modules/AnimatedText.js"
 import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
 import rect from "../../../images/rect.png";
+import xorTable from "../../../images/XORTable.png"
 
 let sigmoid = require('sigmoid');
 
@@ -28,7 +29,8 @@ const Layer = (props) => {
   }
   return (
   <>
-    <div style={{paddingBottom: "2rem"}}>
+    <div>
+    <div style={{padding: "2rem", paddingRight: "0rem"}}>
       <ReactSlider
       className="horizontal-slider"
       thumbClassName="example-thumb"
@@ -39,7 +41,8 @@ const Layer = (props) => {
       onChange={(value) => setValue(value)}
       />
     </div>
-    <strong>{value} NEURON{value == 1 ? "": "S"}</strong>
+    <strong>Layer {props.number}: {value} NEURON{value == 1 ? "": "S"}</strong>
+    </div>
 
     <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "5vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={handleSubmit}></div>
     <br></br>
@@ -250,9 +253,15 @@ class NeuralNet extends React.Component {
   handleRowSubmit(event){
     // run the neural network on this row
     console.log(this.data);
-    let dataRow= this.data[this.state.row];
-    console.log(dataRow);
-    let input = [dataRow[0], dataRow[1]];
+    let input = [];
+    if (this.state.row != 4) {
+      let dataRow= this.data[this.state.row];
+      console.log(dataRow);
+      input = [dataRow[0], dataRow[1]];
+    } else {
+      input = [1, 1];
+    }
+    
     let neuralValues = Array();
     let weights = this.state.weights;
     neuralValues.push(input);
@@ -308,38 +317,60 @@ class NeuralNet extends React.Component {
     console.log(this.state.weights);
     return (
       <>
-      <div className="u-textCenter">
+      <div className="u-textCenter" style={{paddingLeft: "7rem", paddingRight: "7rem"}}>
         <br></br>
         <br></br>
-        {this.getTitle()};
-        <p style={{marginLeft: "2rem", marginRight: "2rem"}}>The exclusive or (or <strong>XOR</strong>) operation takes two binary inputs (numbers that are either zero or one) and returns <strong>true</strong> if they are different and <strong>false</strong> if they are the same.</p>
-        <p>Let's try constructing our own custom neural network to represent this function! </p>
+        {this.getTitle()}
         <br></br>
         <br></br>
-        <div class="u-textCenter upper-row">
-          <div id="table-div">
-            {this.getTable()}
-          </div>
+        <div class="u-textCenter upper-row" style={{marginBottom: "4rem"}}>
           <div>
-            <layersinp>
-              <p style={{marginLeft: "7rem"}}>
-              Choose how many neurons each layer has! <br/>
-              Click on an edge to change its <strong>weight</strong> (i.e. how much the input node "flows" into the next node).<br/><br/><br/>
-              {this.getLayersInp()}
-              </p>
-            </layersinp>
+            {/* {this.getTable()} */}
+            <img src={xorTable} style={{width: "30vw"}}></img>
           </div>
-        </div>
 
-        <div className="u-textCenter" style={{marginLeft: "35vw"}}>
+          <div className="u-textCenter">
           <network className="u-textCenter">
               {this.getSVGForNetwork()}
           </network>
         </div>
+         
+          
+        </div>
+
+        <p style={{marginLeft: "2rem", marginRight: "2rem"}}>The exclusive or (or <strong>XOR</strong>) operation takes two binary inputs (numbers that are either zero or one) and returns <strong>true</strong> if they are different and <strong>false</strong> if they are the same.</p>
+        <p>Let's try constructing our own custom neural network to represent this function! </p>
+
+        <div>
+            <layersinp>
+              <p>
+              Choose how many neurons each layer has! <br/>
+              Click on an edge to change its <strong>weight</strong> (i.e. how much the input node "flows" into the next node).<br/><br/><br/>
+              <div class="horiz">
+              {this.getLayersInp()}
+              </div>
+              </p>
+            </layersinp>
+          </div>
+
 
         <run className="u-textCenter">
-          <label>Run data on a row (1-4):</label><br></br>
-          <input type="text"onChange={this.handleRowChange}></input><br></br>
+          <label>Test out your predicton and run your network on a piece of data (from rows 1-4)!</label><br></br>
+          {/* <input type="text"onChange={this.handleRowChange}></input><br></br> */}
+          <br></br>
+
+          <select className="mystyle" onChange={this.handleRowChange}>
+
+          <option value="1">Row 1 (0, 0)</option>
+
+          <option value="2">Row 2 (0, 1)</option>
+
+          <option value="3">Row 3 (1, 0)</option>
+
+          <option value="4">Row 4 (1, 1)</option>
+
+          </select>
+
           {/* <button type="submit" onClick={this.handleRowSubmit}>Submit</button> */}
           <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={this.handleRowSubmit}></div>
 

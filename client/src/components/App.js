@@ -5,7 +5,8 @@ import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
 import HomePage from "./pages/HomePage.js";
-import NeuralNet from "./pages/NeuralNet";
+import NeuralNet from "./pages/NeuralNet.js";
+import PCA from "./pages/PCA.js"
 import NavBar from "./modules/NavBar.js"
 import "../utilities.css";
 
@@ -35,6 +36,12 @@ const App = () => {
           <NeuralNet
             path="/xornet"
           />
+        }
+      />
+      <Route
+        path="/pca"
+        element={
+          <PCA path="/pca"/>
         }
       />
       <Route path="*" element={<NotFound />} />
