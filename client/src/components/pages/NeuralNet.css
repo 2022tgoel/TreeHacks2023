@@ -146,3 +146,44 @@ g:hover .btn, btn:hover{
 strong {
     color: #009879;
 }
+
+.myButton{
+    background:url("../../../images/submit.jpg") no-repeat;
+    cursor:pointer;
+    border:none;
+    width:100px;
+    height:100px;
+}
+
+.myButton:active {
+     background:url("../../../images/submit.jpg") no-repeat;
+}
+
+.submit-button {
+    height: "10vh";
+    width: "13vw";
+    background-size: "100% 100%";
+}
+
+.brighten:hover {
+    filter: saturate(500%)
+}
+
+.center {
+    margin: auto;
+}
+
+#table-div {
+    border: 2px solid black;
+    border-radius: 8px;
+
+}
+
+body {
+    font-family: "Gloria Hallelujah";
+    margin: 7rem;
+}
+
+p {
+    font-size: 1.2rem;
+}

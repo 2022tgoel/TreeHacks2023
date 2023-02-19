@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
 import ReactSlider from "react-slider";
+import cat from "../../../images/submit.jpg";
 
 let sigmoid = require('sigmoid');
 
@@ -36,7 +37,8 @@ const Layer = (props) => {
       />
     </div>
     <strong>{value} NEURON{value == 1 ? "": "S"}</strong>
-    <button type="submit" onClick={handleSubmit} style={{margin: "10px"}}>Submit</button>
+
+    <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "5vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={handleSubmit}></div>
     <br></br>
   </>
   );
@@ -276,14 +278,16 @@ class NeuralNet extends React.Component {
         <br></br>
         <br></br>
         <div class="u-textCenter upper-row">
-          <div>
+          <div id="table-div">
             {this.getTable()}
           </div>
           <div>
             <layersinp>
+              <p style={{marginLeft: "7rem"}}>
               Choose how many neurons each layer has! <br/>
               Click on an edge to change its <strong>weight</strong> (i.e. how much the input node "flows" into the next node).<br/><br/><br/>
               {this.getLayersInp()}
+              </p>
             </layersinp>
           </div>
         </div>
@@ -294,10 +298,11 @@ class NeuralNet extends React.Component {
           </network>
         </div>
 
-        <run>
+        <run className="u-textCenter">
           <label>Run data on a row (1-4):</label><br></br>
           <input type="text"onChange={this.handleRowChange}></input><br></br>
-          <button type="submit" onClick={this.handleRowSubmit}>Submit</button>
+          {/* <button type="submit" onClick={this.handleRowSubmit}>Submit</button> */}
+          <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={this.handleRowSubmit}></div>
         </run>
 
         {/* <MotionComponent></MotionComponent> */}
