@@ -10,6 +10,9 @@ import cat from "../../../images/submit.jpg";
 import rect from "../../../images/rect.png";
 import xorTable from "../../../images/XORTable.png"
 import BorderImg from "../../../images/Border.jpg"
+import up from "../../../images/up.png"
+import down from "../../../images/down.png"
+import nodeImage from "../../../images/Cat_node.png"
 
 let sigmoid = require('sigmoid');
 
@@ -66,9 +69,13 @@ const Edge = (props) => { // edges are positioned relative to layers
 
       <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={props.weight > 0 ? rgbToHex(255, 255 - 50*props.weight, 255 - 50 * props.weight) : rgbToHex(255 + 50 * props.weight, 255 + 25 * props.weight, 255 + 25 * props.weight)} strokeWidth={10} stroke-linecap="round" />
 
+      <image className="btn" href={up} x={props.x1 + dx*0.4} y={props.y1 + dy*0.4} height={15} width={15} onClick={() => props.increaseWeight()}/>
+      <image className="btn" href={down} x={props.x1 + dx*0.6} y={props.y1 + dy*0.6} height={15} width={15} onClick={() => props.decreaseWeight()}/>
+      
+      {/* <circle className="btn" cx={props.x1 + dx*0.4} cy={props.y1 + dy*0.4} r={10} onClick={() => props.increaseWeight()}></circle>
       <circle className="btn" cx={props.x1 + dx*0.4} cy={props.y1 + dy*0.4} r={10} onClick={() => props.increaseWeight()}></circle>
       <circle className="btn" cx={props.x1 + dx*0.6} cy={props.y1 + dy*0.6} r={10} onClick={() => props.decreaseWeight()}></circle>
-      
+       */}
     </g>
     
   </>);
@@ -85,13 +92,13 @@ const AnimatedNode = (props) => {
   let slowdown = 2;
   const controls = useAnimationControls();
   useEffect(() => {
-    controls.start({ fillOpacity : [0, activ], transition : {delay :slowdown* layer, duration : slowdown*1} }).then(() => {
-      controls.start({ fillOpacity: 1, transition : {delay : slowdown*(n - layer), duration : slowdown* 1}})
+    controls.start({ opacity : [0, activ], transition : {delay :slowdown* layer, duration : slowdown*1} }).then(() => {
+      controls.start({ opacity: 1, transition : {delay : slowdown*(n - layer), duration : slowdown* 1}})
     });
     
   }, []);
-  return (<motion.circle key={key} cx={x} cy={y} r={r}
-    animate={controls}></motion.circle>);
+  return (<motion.image key={key} href={nodeImage} x={x-r} y={y-r} height={r*2} width={r*2}
+    animate={controls}></motion.image>);
 
 }
 
@@ -152,15 +159,7 @@ class NeuralNet extends React.Component {
     console.log("here");
     let components = Array();
     let key = 0;
-    for (let layer =0; layer < this.n; layer++){
-      let x = s*layer + s/2; // center of all the circles
-      for (let node =0; node < this.state.layer_sizes[layer]; node++){
-        let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
-        // console.log(key, x, y);
-        components.push(<circle key={key} cx={x} cy={y} r={r}></circle>);
-        key+=1;
-      }
-    }
+    
 
     for (let layer =0; layer < this.n-1; layer++){
       for (let i = 0; i < this.state.layer_sizes[layer]; i++){
@@ -174,6 +173,20 @@ class NeuralNet extends React.Component {
       }
     }
 
+    for (let layer =0; layer < this.n; layer++){
+      let x = s*layer + s/2; // center of all the circles
+      for (let node =0; node < this.state.layer_sizes[layer]; node++){
+        let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
+        // console.log(key, x, y);
+        // components.push(<circle key={key} cx={x} cy={y} r={r}></circle>);
+        components.push(
+          <image href={nodeImage} x={x-r} y={y-r} height={r*2} width={r*2}/>
+        );
+        
+      
+        key+=1;
+      }
+    }
     return (<><svg position="absolute" width={s*this.n} height={height}>{components}</svg></>);
   }
 
@@ -183,6 +196,19 @@ class NeuralNet extends React.Component {
     console.log("here, getting the new SVG");
     let components = Array();
     let key = 0;
+    
+    for (let layer =0; layer < this.n-1; layer++){
+      for (let i = 0; i < this.state.layer_sizes[layer]; i++){
+        for (let j =0; j < this.state.layer_sizes[layer+1]; j++){
+          let y1 = i*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;  
+          let y2 = j*s + s/2 + height/2 - s*this.state.layer_sizes[layer+1]/2;
+          // console.log(y1, y2);
+          components.push(<Edge key={key} x1={s*layer+s/2} x2={s*(layer+1)+s/2} y1={y1} y2={y2} weight={this.state.weights[layer][j][i]} increaseWeight={()=> this.increaseWeight(layer, i, j)} decreaseWeight={()=> this.decreaseWeight(layer, i, j)}></Edge>)
+          key++
+        }
+      }
+    }
+
     for (let layer =0; layer < this.n; layer++){
       let x = s*layer + s/2; // center of all the circles
       for (let node =0; node < this.state.layer_sizes[layer]; node++){
@@ -197,17 +223,6 @@ class NeuralNet extends React.Component {
       }
     }
 
-    for (let layer =0; layer < this.n-1; layer++){
-      for (let i = 0; i < this.state.layer_sizes[layer]; i++){
-        for (let j =0; j < this.state.layer_sizes[layer+1]; j++){
-          let y1 = i*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;  
-          let y2 = j*s + s/2 + height/2 - s*this.state.layer_sizes[layer+1]/2;
-          // console.log(y1, y2);
-          components.push(<Edge key={key} x1={s*layer+s/2} x2={s*(layer+1)+s/2} y1={y1} y2={y2} weight={this.state.weights[layer][j][i]} increaseWeight={()=> this.increaseWeight(layer, i, j)} decreaseWeight={()=> this.decreaseWeight(layer, i, j)}></Edge>)
-          key++
-        }
-      }
-    }
 
     return (<><svg position="absolute" width={s*this.n} height={height}>{components}</svg></>);
   }
