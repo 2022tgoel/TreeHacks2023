@@ -64,7 +64,7 @@ const Edge = (props) => { // edges are positioned relative to layers
   <>
     <g>
 
-      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={props.weight > 0 ? rgbToHex(255, 255 - 50*props.weight, 255 - 50 * props.weight) : rgbToHex(255 + 50 * props.weight, 255 + 25 * props.weight, 255 + 25 * props.weight)} strokeWidth={10} />
+      <line className="edge" x1={props.x1} y1={props.y1} x2={props.x2} y2={props.y2} stroke={props.weight > 0 ? rgbToHex(255, 255 - 50*props.weight, 255 - 50 * props.weight) : rgbToHex(255 + 50 * props.weight, 255 + 25 * props.weight, 255 + 25 * props.weight)} strokeWidth={10} stroke-linecap="round" />
 
       <circle className="btn" cx={props.x1 + dx*0.4} cy={props.y1 + dy*0.4} r={10} onClick={() => props.increaseWeight()}></circle>
       <circle className="btn" cx={props.x1 + dx*0.6} cy={props.y1 + dy*0.6} r={10} onClick={() => props.decreaseWeight()}></circle>

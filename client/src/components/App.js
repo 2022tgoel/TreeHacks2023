@@ -19,6 +19,7 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   return (
+    <>
     <Routes>
       <Route
         path="/"
@@ -44,6 +45,8 @@ const App = () => {
       />
       <Route path="*" element={<NotFound/>} />
     </Routes>
+    </>
+    
   );
 };
 
