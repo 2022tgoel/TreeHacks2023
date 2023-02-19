@@ -19,8 +19,6 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   return (
-    <>
-    <NavBar></NavBar>
     <Routes>
       <Route
         path="/"
@@ -44,10 +42,8 @@ const App = () => {
           <PCA path="/pca"/>
         }
       />
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<NotFound/>} />
     </Routes>
-    </>
-    
   );
 };
 

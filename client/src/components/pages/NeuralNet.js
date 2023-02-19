@@ -9,6 +9,7 @@ import ReactSlider from "react-slider";
 import cat from "../../../images/submit.jpg";
 import rect from "../../../images/rect.png";
 import xorTable from "../../../images/XORTable.png"
+import BorderImg from "../../../images/Border_1.png"
 
 let sigmoid = require('sigmoid');
 
@@ -323,7 +324,7 @@ class NeuralNet extends React.Component {
     console.log(this.state.weights);
     return (
       <>
-      <div className="u-textCenter" style={{paddingLeft: "7rem", paddingRight: "7rem"}}>
+      <div className="u-textCenter" style={{paddingLeft: "13rem", paddingRight: "13rem"}}>
         <br></br>
         <br></br>
         {this.getTitle()}
@@ -378,12 +379,16 @@ class NeuralNet extends React.Component {
           </select>
 
           {/* <button type="submit" onClick={this.handleRowSubmit}>Submit</button> */}
-          <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%", marginBottom: "3rem"}} onClick={this.handleRowSubmit}></div>
+          <div className="brighten submit-button center" style={{backgroundImage: `url(${cat})`, height: "10vh", aspectRatio: "2.62", backgroundSize: "100% 100%"}} onClick={this.handleRowSubmit}></div>
 
         </run>
 
         {/* <MotionComponent></MotionComponent> */}
       </div>
+
+      <img src={BorderImg} style={{position: "absolute", top: "0", left: "0", zIndex: "1", borderWidth: "0"}}></img>
+      <img src={BorderImg} style={{position: "absolute", top: "0", right: "0", zIndex: "1", transform: "scaleX(-1)"}}></img>
+
       </>
       
     );

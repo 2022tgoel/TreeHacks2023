@@ -36,7 +36,7 @@ const PCA = () => {
     }
     
     return (
-        <div className="u-textCenter">
+        <div className="u-textCenter" style={{width: "100%", height: "100%"}}>
         <h1>Accuracy (F1) Scores For Digit Classification</h1>
         <p className="center" style={{width: "80vw"}} >A really important technique often used in data analysis and machine learning is <strong>Principal Component Analysis (PCA)</strong> — this allows us to reduce the complexity of our data which can often make it easier to process! <br/><br/>In the below example, we've trained a classifier for a dataset consisting of images of digits (0-9) using <strong>InterSystems's IntegratedML</strong> tool. Maybe more isn't always better...<br/><br/>
         
@@ -76,7 +76,7 @@ const PCA = () => {
         />
         <p>Class Number</p>
 
-        <img src={TestImg} style={{position: "absolute", top: "80vh", left: "80vw"}}/>
+        <img src={TestImg} style={{position: "absolute", top: "0", right: "0", zIndex: "-1"}}/>
 
         </div>
    );
