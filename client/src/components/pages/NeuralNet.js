@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import "../../utilities.css";
 import "./NeuralNet.css"
+import ReactSlider from "react-slider";
 
 let sigmoid = require('sigmoid');
 
@@ -10,11 +11,11 @@ let s = 120; /* hardcoded */
 let r = 35 
 
 const Layer = (props) => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
   let x = "layer " + props.number ;
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setValue(Math.round(event.target.value));
   }
 
   const handleSubmit = (event) => {
@@ -23,10 +24,19 @@ const Layer = (props) => {
   }
   return (
   <>
-
-    <label htmlFor= {x}>Layer {props.number}:</label><br></br>
-    <input type="text" id={x} name={x} onChange={handleChange}></input><br></br>
-    <button type="submit" onClick={handleSubmit}>Submit</button>
+    <div style={{paddingBottom: "2rem"}}>
+      <ReactSlider
+      className="horizontal-slider"
+      thumbClassName="example-thumb"
+      trackClassName="example-track"
+      min="1"
+      max="5"
+      renderThumb={(props, state) => <div {...props}></div>}
+      onChange={(value) => setValue(value)}
+      />
+    </div>
+    <strong>{value} NEURON{value == 1 ? "": "S"}</strong>
+    <button type="submit" onClick={handleSubmit} style={{margin: "10px"}}>Submit</button>
     <br></br>
   </>
   );
@@ -157,8 +167,8 @@ class NeuralNet extends React.Component {
         let y = node*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
         let activ = this.state.activations[layer][node];
         // console.log(key, x, y);
-        components.push(<motion.circle key={key} cx={x} cy={y} r={r} initial={{ opacity: 0 }}
-          animate={{ opacity:  activ}} transition={{delay : layer, duration : 1}}></motion.circle>);
+        components.push(<motion.circle key={key} cx={x} cy={y} r={r} initial={{ opacity : 0}}
+          animate={{ opacity : activ}} transition={{delay : layer, duration : 1}}></motion.circle>);
         key+=1;
       }
     }
@@ -166,7 +176,7 @@ class NeuralNet extends React.Component {
     for (let layer =0; layer < this.n-1; layer++){
       for (let i = 0; i < this.state.layer_sizes[layer]; i++){
         for (let j =0; j < this.state.layer_sizes[layer+1]; j++){
-          let y1 = i*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;
+          let y1 = i*s + s/2 + height/2 - s*this.state.layer_sizes[layer]/2;  
           let y2 = j*s + s/2 + height/2 - s*this.state.layer_sizes[layer+1]/2;
           // console.log(y1, y2);
           components.push(<Edge key={key} x1={s*layer+s/2} x2={s*(layer+1)+s/2} y1={y1} y2={y2} weight={this.state.weights[layer][j][i]} increaseWeight={()=> this.increaseWeight(layer, i, j)} decreaseWeight={()=> this.decreaseWeight(layer, i, j)}></Edge>)
@@ -193,20 +203,26 @@ class NeuralNet extends React.Component {
   }
 
   getTable(){
-    let table = Array();
-    table.push(<><tr>
-      <th>Input 1</th>
-      <th>Input 2</th>
-      <th>Output</th>
-    </tr></>);
-    for (let i = 0; i < 4; i++){
-      table.push(<><tr>
-        <th>{this.data[i][0]}</th>
-        <th>{this.data[i][1]}</th>
-        <th>{this.data[i][2]}</th>
-      </tr></>)
-    }
-    return <data><table>{table}</table></data>;
+    return (
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Input 1</th>
+            <th>Input 2</th>
+            <th>Output</th>
+          </tr>
+        </thead>
+      <tbody>
+        {this.data.map(element => 
+           <tr>
+            <th>{element[0]}</th>
+            <th>{element[1]}</th>
+            <th>{element[2]}</th>
+          </tr>
+        )}
+    </tbody>
+    </table>
+    );
   }
 
   handleRowChange(event){
@@ -253,27 +269,39 @@ class NeuralNet extends React.Component {
     console.log(this.state.weights);
     return (
       <>
-      <h1>Hand Train a Model for XOR</h1>
-      <page>
-        {this.getTable()}
-        <layersinp>
-          Specify the architecture of the network<br></br>
-          The input layer should have two dimensions <br></br>
-          and the output layer should have one dimension <br></br>
-          {this.getLayersInp()}
-        </layersinp>
-        <network>
-          {this.getSVGForNetwork()}
+      <div className="u-textCenter">
+        <h1>Hand Train a Model for the Exclusive OR (XOR) Function!</h1>
+        <p style={{marginLeft: "2rem", marginRight: "2rem"}}>The exclusive or (or <strong>XOR</strong>) operation takes two binary inputs (numbers that are either zero or one) and returns <strong>true</strong> if they are different and <strong>false</strong> if they are the same.</p>
+        <p>Let's try constructing our own custom neural network to represent this function! </p>
+        <br></br>
+        <br></br>
+        <div class="u-textCenter upper-row">
+          <div>
+            {this.getTable()}
+          </div>
+          <div>
+            <layersinp>
+              Choose how many neurons each layer has! <br/>
+              Click on an edge to change its <strong>weight</strong> (i.e. how much the input node "flows" into the next node).<br/><br/><br/>
+              {this.getLayersInp()}
+            </layersinp>
+          </div>
+        </div>
 
-        </network>
+        <div className="u-textCenter" style={{marginLeft: "35vw"}}>
+          <network className="u-textCenter">
+              {this.getSVGForNetwork()}
+          </network>
+        </div>
+
         <run>
           <label>Run data on a row (1-4):</label><br></br>
           <input type="text"onChange={this.handleRowChange}></input><br></br>
           <button type="submit" onClick={this.handleRowSubmit}>Submit</button>
         </run>
-      </page>
-      {/* <MotionComponent></MotionComponent> */}
-      
+
+        {/* <MotionComponent></MotionComponent> */}
+      </div>
       </>
       
     );
