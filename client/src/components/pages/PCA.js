@@ -3,6 +3,8 @@ import ReactSlider from "react-slider";
 import Chart from 'chart.js/auto';
 import {Bar} from 'react-chartjs-2';
 import TestImg from "../../../images/rect.png"
+import MNIST from "../../../images/mniststuff.png"
+
 import MovingCat from "../modules/Cat.js"
 
 import "./style.css"
@@ -75,6 +77,9 @@ const PCA = () => {
             }
           }}
         />
+        <div>
+          <img src={MNIST} style={{width: "30vw"}}></img>
+        </div>
         <p>Class Number</p>
         <MovingCat></MovingCat>
         </div>
